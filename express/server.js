@@ -17,7 +17,7 @@ function checkVersion(){
 }
 function getData(){
   console.log('getting data')
-  return axios('https://api.matsurihi.me/mltd/v1/cards/33?prettyPrint=false')
+  return axios('https://api.matsurihi.me/mltd/v1/cards?prettyPrint=false')
 }
 async function checkAndGet(){
   let serverVer = await checkVersion()
@@ -39,7 +39,6 @@ router.get('/', async (req, res) => {
 
 router.get('/another', async (req, res) => res.json({ route: req.originalUrl }));
 router.post('/', async (req, res) => {
-  console.log(req.body)
   if(req.body.version == localData.version){
     return res.json(localData)
   }else{
