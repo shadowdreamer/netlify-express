@@ -36,15 +36,13 @@ router.get('/', async (req, res) => {
 })
 router.get('/another', async (req, res) => res.json({ route: req.originalUrl }))
 router.post('/', async (req, res) => {
-  let shortData = []
-  if (req.body.localLength) {
-    shortData = cards.slice(req.body.localLength)
-  }
+  console.log(req.body)
+  let clientLen = req.body.localLength || 0
   if (req.body.version == localVer) {
-    return res.json(shortData.length > 0 ? shortData : cards)
+    return res.json(cards.slice(clientLen))
   } else {
     await checkAndGet()
-    return res.json(shortData.length > 0 ? shortData : cards)
+    return res.json(cards.slice(clientLen))
   }
 })
 app.use('/pub', express.static('public'))
