@@ -41,7 +41,7 @@ router.post('/', async (req, res) => {
   let clientLen = req.body.localLength || 0
   let sendData = cards
   if(clientLen > 0){
-    let sendData = cards.slice(clientLen)
+    sendData = cards.slice(clientLen)
     sendData = sendData.concat(rank5)
   }
   if (req.body.version == localVer) {
