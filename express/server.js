@@ -8,6 +8,7 @@ const router = express.Router()
 const axios = require('axios')
 
 let cards = []
+let rank5 = []
 let localVer = 'not ready'
 function checkVersion () {
   console.log('checking version')
@@ -24,6 +25,7 @@ async function checkAndGet () {
     let serverCards = await getData()
     localVer = serverVer.data.res.updateTime
     cards = serverCards.data
+    rank5 = cards.filter(el=>!!el.rank5Costume)
     return
   } else {
     console.log('need not update')
@@ -36,13 +38,17 @@ router.get('/', async (req, res) => {
 })
 router.get('/another', async (req, res) => res.json({ route: req.originalUrl }))
 router.post('/', async (req, res) => {
-  console.log(req.body)
   let clientLen = req.body.localLength || 0
+  let sendData = cards
+  if(clientLen > 0){
+    let sendData = cards.slice(clientLen)
+    sendData = sendData.concat(rank5)
+  }
   if (req.body.version == localVer) {
-    return res.json(cards.slice(clientLen))
+    return res.json(sendData)
   } else {
     await checkAndGet()
-    return res.json(cards.slice(clientLen))
+    return res.json(sendData)
   }
 })
 app.use('/pub', express.static('public'))
