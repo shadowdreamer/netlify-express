@@ -39,14 +39,18 @@ router.get('/', async (req, res) => {
 router.get('/another', async (req, res) => res.json({ route: req.originalUrl }))
 router.post('/', async (req, res) => {
   let clientLen = req.body.localLength || 0
-  let sendData = cards
-  if(clientLen > 0){
-    sendData = cards.slice(clientLen)
-    sendData = sendData.concat(rank5)
-  }
+  let sendData = cards  
   if (req.body.version == localVer) {
+    if(clientLen > 0){
+      sendData = cards.slice(clientLen)
+      sendData = sendData.concat(rank5)
+    }
     return res.json(sendData)
   } else {
+    if(clientLen > 0){
+      sendData = cards.slice(clientLen)
+      sendData = sendData.concat(rank5)
+    }
     await checkAndGet()
     return res.json(sendData)
   }
