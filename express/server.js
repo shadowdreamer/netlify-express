@@ -70,9 +70,9 @@ async function getNews(cursor){
     if(news[cursor]){
       return news[cursor]
     }else{
-      let {data} =  await axios(`https://webview-dot-theaterdays.appspot.com/api/info?type=3&cursor=${cursor}&platform=google`)
-      news[data.cursor] = data
-      return data
+      let data=  await axios(`https://webview-dot-theaterdays.appspot.com/api/info?type=3&cursor=${cursor}&platform=google`)
+      news[cursor] = data.data
+      return data.data
     }
   }
 }
