@@ -10,6 +10,11 @@ const cors = require('cors');
 const axios = require('axios')
 const url = require("url")
 
+const corsOptions = {
+  origin: 'http://mltd.dovahkiin.top', 
+  optionsSuccessStatus: 200 
+}
+
 let cards = []
 let rank5 = []
 let localVer = 'not ready'
@@ -35,12 +40,12 @@ async function checkAndGet () {
     return
   }
 }
-router.get('/', async (req, res) => {
+router.get('/',cors(corsOptions), async (req, res) => {
   await checkAndGet()
   return res.json(cards)
 })
 router.get('/another', async (req, res) => res.json({ route: req.originalUrl }))
-router.post('/', async (req, res) => {
+router.post('/',cors(corsOptions), async (req, res) => {
   let clientLen = req.body.localLength || 0
   let sendData
   if (req.body.version != localVer) {
@@ -76,17 +81,13 @@ async function getNews(cursor){
     }
   }
 }
-router.get('/news',async(req,res)=>{
+router.get('/news', cors(corsOptions),async(req,res)=>{
   let query = url.parse(req.url,true).query;
   let data = await getNews(query.cursor)  
   res.json(data)
 })
 
-var corsOptions = {
-  origin: 'http://mltd.dovahkiin.top', 
-  optionsSuccessStatus: 200 
-}
-app.use(cors(corsOptions));
+
 app.use('/pub', express.static('public'))
 app.use(bodyParser.json())
 app.use('/.netlify/functions/server', router)  // path must route to lambda
