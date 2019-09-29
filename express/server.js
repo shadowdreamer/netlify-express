@@ -6,6 +6,9 @@ const bodyParser = require('body-parser')
 
 const router = express.Router()
 const axios = require('axios')
+const url = require("url")
+const http = require("http")
+const https = require("https")
 
 let cards = []
 let rank5 = []
@@ -51,6 +54,35 @@ router.post('/', async (req, res) => {
   }
   return res.json(sendData)
 })
+
+//获取游戏更新情报
+const news={}
+async function getNews(cursor){
+  if(!cursor){
+    if(news.start){
+      return news.start
+    }else{
+      let data =  await axios(`https://webview-dot-theaterdays.appspot.com/api/info?type=3&cursor=&platform=google`)
+      news.start = data.data
+      return data.data
+    }
+  }else{
+    if(news[cursor]){
+      return news[cursor]
+    }else{
+      let {data} =  await axios(`https://webview-dot-theaterdays.appspot.com/api/info?type=3&cursor=${cursor}&platform=google`)
+      news[data.cursor] = data
+      return data
+    }
+  }
+}
+router.get('/news',async(req,res)=>{
+  let query = url.parse(req.url,true).query;
+  let data = await getNews(query.cursor)  
+  res.json(data)
+})
+
+
 app.use('/pub', express.static('public'))
 app.use(bodyParser.json())
 app.use('/.netlify/functions/server', router)  // path must route to lambda
