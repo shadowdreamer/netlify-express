@@ -11,7 +11,7 @@ const axios = require('axios')
 const url = require("url")
 
 const corsOptions = {
-  origin: 'http://mltd.dovahkiin.top', 
+  origin: 'https://mltd.dovahkiin.top', 
   optionsSuccessStatus: 200 
 }
 
