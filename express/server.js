@@ -5,10 +5,10 @@ const app = express()
 const bodyParser = require('body-parser')
 
 const router = express.Router()
+const cors = require('cors');
+
 const axios = require('axios')
 const url = require("url")
-const http = require("http")
-const https = require("https")
 
 let cards = []
 let rank5 = []
@@ -82,7 +82,11 @@ router.get('/news',async(req,res)=>{
   res.json(data)
 })
 
-
+var corsOptions = {
+  origin: 'http://mltd.dovahkiin.top', 
+  optionsSuccessStatus: 200 
+}
+app.use(cors(corsOptions));
 app.use('/pub', express.static('public'))
 app.use(bodyParser.json())
 app.use('/.netlify/functions/server', router)  // path must route to lambda
