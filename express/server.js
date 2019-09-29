@@ -10,11 +10,6 @@ const cors = require('cors');
 const axios = require('axios')
 const url = require("url")
 
-const corsOptions = {
-  origin: 'https://mltd.dovahkiin.top', 
-  optionsSuccessStatus: 200 
-}
-
 let cards = []
 let rank5 = []
 let localVer = 'not ready'
@@ -40,12 +35,12 @@ async function checkAndGet () {
     return
   }
 }
-router.get('/',cors(corsOptions), async (req, res) => {
+router.get('/', async (req, res) => {
   await checkAndGet()
   return res.json(cards)
 })
 router.get('/another', async (req, res) => res.json({ route: req.originalUrl }))
-router.post('/',cors(corsOptions), async (req, res) => {
+router.post('/', async (req, res) => {
   let clientLen = req.body.localLength || 0
   let sendData
   if (req.body.version != localVer) {
@@ -57,7 +52,6 @@ router.post('/',cors(corsOptions), async (req, res) => {
   }else{
     sendData = cards
   }
-  res.header('Access-Control-Allow-Origin', 'https://mltd.dovahkiin.top');
   return res.json(sendData)
 })
 
@@ -82,13 +76,13 @@ async function getNews(cursor){
     }
   }
 }
-router.get('/news', cors(corsOptions),async(req,res)=>{
+router.get('/news', async(req,res)=>{
   let query = url.parse(req.url,true).query;
   let data = await getNews(query.cursor)  
   res.json(data)
 })
 
-
+app.use(cors())
 app.use('/pub', express.static('public'))
 app.use(bodyParser.json())
 app.use('/.netlify/functions/server', router)  // path must route to lambda
