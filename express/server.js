@@ -57,6 +57,7 @@ router.post('/',cors(corsOptions), async (req, res) => {
   }else{
     sendData = cards
   }
+  res.header('Access-Control-Allow-Origin', 'https://mltd.dovahkiin.top');
   return res.json(sendData)
 })
 
