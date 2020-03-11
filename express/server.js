@@ -76,9 +76,25 @@ async function getNews(cursor){
     }
   }
 }
+
+async function getInfo(cursor = "",type=1){
+    let {data} =  await axios(`https://webview-dot-theaterdays.appspot.com/api/info?type=${type}&cursor=${cursor}&platform=google`)
+    return data
+
+}
 router.get('/news', async(req,res)=>{
   let query = url.parse(req.url,true).query;
-  let data = await getNews(query.cursor)  
+  let data = await getInfo(query.cursor,3)  
+  res.json(data)
+})
+router.get('/events', async(req,res)=>{
+  let query = url.parse(req.url,true).query;
+  let data = await getInfo(query.cursor,2)
+  res.json(data)
+})
+router.get('/features', async(req,res)=>{
+  let query = url.parse(req.url,true).query;
+  let data = await getInfo(query.cursor,1)
   res.json(data)
 })
 
