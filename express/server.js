@@ -55,28 +55,6 @@ router.post('/', async (req, res) => {
   return res.json(sendData)
 })
 
-//获取游戏更新情报
-const news={}
-async function getNews(cursor){
-  if(!cursor){
-    if(news.start){
-      return news.start
-    }else{
-      let data =  await axios(`https://webview-dot-theaterdays.appspot.com/api/info?type=3&cursor=&platform=google`)
-      news.start = data.data
-      return data.data
-    }
-  }else{
-    if(news[cursor]){
-      return news[cursor]
-    }else{
-      let data=  await axios(`https://webview-dot-theaterdays.appspot.com/api/info?type=3&cursor=${cursor}&platform=google`)
-      news[cursor] = data.data
-      return data.data
-    }
-  }
-}
-
 async function getInfo(cursor = "",type=1){
     let {data} =  await axios(`https://webview-dot-theaterdays.appspot.com/api/info?type=${type}&cursor=${cursor}&platform=google`)
     return data
@@ -89,12 +67,12 @@ router.get('/news', async(req,res)=>{
 })
 router.get('/events', async(req,res)=>{
   let query = url.parse(req.url,true).query;
-  let data = await getInfo(query.cursor,2)
+  let data = await getInfo(query.cursor,1)
   res.json(data)
 })
 router.get('/features', async(req,res)=>{
   let query = url.parse(req.url,true).query;
-  let data = await getInfo(query.cursor,1)
+  let data = await getInfo(query.cursor,2)
   res.json(data)
 })
 
