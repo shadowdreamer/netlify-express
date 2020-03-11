@@ -7,7 +7,7 @@
     "build": "netlify-lambda build express",
     "start": "node server-local.js",
     "start-dev": "node  --inspect server-local.js",
-    "severless":"netlify-lambda serve express"
+    "severless": "netlify-lambda serve express"
   },
   "repository": {
     "type": "git",
@@ -29,8 +29,8 @@
   },
   "devDependencies": {
     "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
     "express": "^4.16.3",
-    "cors":"2.8.5",
     "netlify-lambda": "^1.4.13",
     "serverless-http": "^1.6.0"
   }
